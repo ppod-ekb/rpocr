@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  jackson:
+    serialization:
+      fail-on-empty-beans: true
+
+service:
+  version: @project.version@
+
+logging:
+  level.ru.cbr.rpocr: DEBUG
+  #level.org.springframework.security: DEBUG

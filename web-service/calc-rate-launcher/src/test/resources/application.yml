@@ -1,0 +1,21 @@
+server:
+  port: 8089
+
+spring:
+  jackson:
+    serialization:
+      fail-on-empty-beans: true
+
+service:
+  version: test
+
+container:
+  sparkHome: "/home/andrei/spark-2.4.4-bin-hadoop2.7"
+  javaHome: "/usr/lib/jvm/java-8-oracle"
+  driverLocation: "/home/andrei/develop/java/rpocr/spark/calc-rate-driver/target/calc-rate-driver-1.0-SNAPSHOT.jar"
+  driverMainClass: "ru.cbr.rpocr.spark.crd.Main"
+  sparkMaster: "spark://172.17.0.5:7077"
+
+logging:
+  level.org.springframework.security: ERROR
+  level.org.springframework: ERROR
