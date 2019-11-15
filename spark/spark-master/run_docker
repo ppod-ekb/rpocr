@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -d -it --name $2 -e "SPARK_MASTER_HOST=172.17.0.4" --publish 7077:7077 --publish 40080:8080 -v /mnt/spark/volume/:/mnt/spark/volume $1

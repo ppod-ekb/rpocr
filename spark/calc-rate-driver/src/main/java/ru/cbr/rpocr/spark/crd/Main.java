@@ -42,9 +42,10 @@ public class Main {
         }
     }
 
-    private static SparkConf sparkConfig() {
+    private static SparkConf sparkConfig(String sparkMaster) {
         SparkConf conf = new SparkConf();
-        conf.setMaster(PROPS.getProperty("spark.mster"))
+        //conf.setMaster(PROPS.getProperty("spark.mster"))
+        conf.setMaster(sparkMaster)
         //conf.setMaster("local[*]")
         //conf.setMaster("spark://172.17.0.5:7077")
         .set("spark.ui.enabled", "false")
@@ -53,39 +54,27 @@ public class Main {
         return conf;
     }
 
-    private static SparkSession sparkSession() {
+    private static SparkSession sparkSession(String sparkMaster) {
         SparkSession spark = SparkSession
                 .builder()
-                .config(sparkConfig())
+                .config(sparkConfig(sparkMaster))
                 .appName(PROPS.getProperty("application.name"))
                 .getOrCreate();
         return spark;
     }
 
     public static void main(String[] args){
-        console.info("start calculate indexes");
+        console.info(">>> start calculate indexes: " + args.length);
+        console.info(">>> master: " + args[0]);
+        console.info(">>> data: " + args[1]);
 
-        SparkSession spark = sparkSession();
+        String sparkMasterLocation = args[0];
+        String priceIndexesJsonlocation = args[1];
+
+        SparkSession spark = sparkSession(sparkMasterLocation);
         PqCalc pqCalc = new PqCalc(spark, PROPS.getProperty("data.priceIndexesJson"));
-        PtCalc ptCalc = new PtCalc(spark, PROPS.getProperty("data.priceIndexesJson"));
+        //PtCalc ptCalc = new PtCalc(spark, PROPS.getProperty("data.priceIndexesJson"));
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                pqCalc.calculate();
-            }
-        });
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                ptCalc.calculate();
-            }
-        });
-
-        executor.shutdown();
-
-        //console.debug("### test: " + SparkFiles.getRootDirectory());
+        pqCalc.calculate();
     }
 }

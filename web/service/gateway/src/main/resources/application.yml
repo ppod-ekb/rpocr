@@ -2,13 +2,39 @@ server:
   port: 8080
 
 spring:
-  jackson:
-    serialization:
-      fail-on-empty-beans: true
+  rsocket:
+    server:
+      mapping-path: /rsocket
+      transport: websocket
+  security:
+    oauth2:
+      client:
+        registration:
+          ppod:
+            registrationId: ppod
+            clientId: 630edf9c9ebf675e980c
+            clientSecret: c43d9bf9520a94529f283eb1ea90c3ae87208fed
+            redirect-uri: http://localhost:8080/login/oauth2/code/custom
+            scope: profile
+            authorization-grant-type: "authorization_code"
+            provider: ppod
+        provider:
+          ppod:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: login
+
+rsocket:
+  spark-launcher:
+    host:
+    port:
 
 service:
   version: @project.version@
+  api:
+    version: 1.0
 
 logging:
   level.ru.cbr.rpocr: DEBUG
-  #level.org.springframework.security: DEBUG
+  level.org.springframework.security: DEBUG

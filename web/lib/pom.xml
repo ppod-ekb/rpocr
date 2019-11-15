@@ -18,9 +18,17 @@
     <modules>
         <module>common-lib</module>
         <module>common-test-lib</module>
+        <module>service-config</module>
     </modules>
 
-    <build>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--<build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -30,5 +38,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-    </build>
+    </build>-->
+
 </project>

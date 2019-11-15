@@ -16,6 +16,8 @@
 
     <modules>
         <module>calc-rate-driver</module>
+        <module>spark-master</module>
+        <module>spark-slave</module>
     </modules>
 
     <properties>
@@ -24,6 +26,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <spark.version>2.4.4</spark.version>
         <spark-sql_2.11.version>2.4.4</spark-sql_2.11.version>
         <logback-classic.version>1.2.3</logback-classic.version>
     </properties>

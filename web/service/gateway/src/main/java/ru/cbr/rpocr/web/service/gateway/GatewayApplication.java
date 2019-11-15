@@ -1,39 +1,75 @@
 package ru.cbr.rpocr.web.service.gateway;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.cbr.rpocr.web.lib.common.VersionController;
+import reactor.core.publisher.Mono;
+import ru.cbr.rpocr.web.lib.config.serviceinfo.EnableRpocrServiceInfo;
 
+import java.security.Principal;
+import java.util.Collections;
+import java.util.Map;
+
+
+@EnableRpocrServiceInfo
 @SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        new SpringApplicationBuilder()
+                .main(GatewayApplication.class)
+                .sources(GatewayApplication.class)
+                .profiles("prod")
+                .run(args);
     }
 
+    @Slf4j
+    @AllArgsConstructor
     @RestController
-    static class AppVersionController extends VersionController.VersionControllerImpl {
+    static class TokenController {
+        @GetMapping("/tokenInfo")
+        public Mono<TokenInfo> servicesApiList(
+                @AuthenticationPrincipal OAuth2User oauth2User,
+                @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
 
-        public AppVersionController(@Autowired AppServiceConfig config) {
-            super(() -> config.getVersion());
+            return Mono.just(new TokenInfo(oauth2User.getName(),
+                                authorizedClient.getAccessToken().getTokenValue(),
+                                authorizedClient.getAccessToken().getTokenType().getValue()));
+        }
+
+        @AllArgsConstructor
+        @NoArgsConstructor
+        @Getter @Setter
+        static class TokenInfo {
+            private String user;
+            private String token;
+            private String tokenType;
         }
     }
 
-    @Configuration
-    @ConfigurationProperties("service")
-    static class AppServiceConfig {
-        private String version;
 
-        public String getVersion() {
-            return version;
+    @Slf4j
+    @AllArgsConstructor
+    @RestController
+    static class ServiceApiController {
+
+        @GetMapping("/me")
+        public Mono<Map<String, String>> hello(Mono<Principal> principal) {
+            return principal
+                    .map(Principal::getName)
+                    .map(username -> Collections.singletonMap("remoteUser", username));
         }
 
-        public void setVersion(String version) {
-            this.version = version;
-        }
+
     }
 }

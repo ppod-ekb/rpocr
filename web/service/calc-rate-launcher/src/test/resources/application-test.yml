@@ -1,0 +1,11 @@
+spark:
+  sparkHome: "/home/andrei/spark-2.4.4-bin-hadoop2.7"
+  javaHome: "/usr/lib/jvm/java-8-oracle"
+  appResource: "/home/andrei/develop/java/rpocr/spark/service/calc-rate-launcher/target/calc-rate-driver.jar"
+  mainClass: "ru.cbr.rpocr.spark.crd.Main"
+  master: "spark://172.17.0.4:7077"
+
+logging:
+  level.org.springframework.security: ERROR
+  level.org.springframework: ERROR
+  level.ru.cbr.rpocr: DEBUG

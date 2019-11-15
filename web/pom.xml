@@ -26,6 +26,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring-security-oauth2-autoconfigure.version>2.2.0.RELEASE</spring-security-oauth2-autoconfigure.version>
+        <lombock.version>1.18.10</lombock.version>
         <spark-launcher.version>2.4.4</spark-launcher.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
 
@@ -43,11 +45,28 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth.boot</groupId>
+                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+                <version>${spring-security-oauth2-autoconfigure.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-launcher -->
             <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-launcher_2.12</artifactId>
                 <version>${spark-launcher.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombock.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>ru.cbr.rpocr.web.lib.config</groupId>
+                <artifactId>service-config</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <!-- internal common lib -->
             <dependency>

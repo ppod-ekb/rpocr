@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -d -it --name $2 --publish 40081:8081 -v /mnt/spark/volume/:/mnt/spark/volume $1
